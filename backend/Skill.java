@@ -39,4 +39,9 @@ public class Skill {
     {
         return -1.0f;
     }
+
+    public int getXP()
+    {
+        return -1;
+    }
 }
