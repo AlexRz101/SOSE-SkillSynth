@@ -30,6 +30,11 @@ public class Skill {
         updateLevel();
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
     private void updateLevel()
     {
         if (level >= maxLevel)
