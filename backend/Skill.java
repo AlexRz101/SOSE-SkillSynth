@@ -56,4 +56,9 @@ public class Skill {
     {
         return xp;
     }
+
+    public int getLevel()
+    {
+        return  level;
+    }
 }

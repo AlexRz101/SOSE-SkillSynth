@@ -63,8 +63,26 @@ public class User{
         return skills.get(skills.indexOf(skill)).getXP();
     }
 
-    public int matchSkills(ArrayList<Skill> requiredSkills)
+    public float matchSkills(ArrayList<Skill> requiredSkills)
     {
-        return -1;
+        if (requiredSkills.isEmpty())
+            return -1.0f;
+
+        float matchLevels = 0.0f;
+        float averageWantedLevel = 0.0f;
+
+        //this is kinda ineffecient and will likely need to be optimized later
+        for (Skill skill : requiredSkills)
+        {
+            if (skills.contains(skill))
+            {
+                matchLevels += skills.get(skills.indexOf(skill)).getLevel();
+            }
+            averageWantedLevel += skill.getLevel();
+        }
+
+        averageWantedLevel = averageWantedLevel/requiredSkills.size();
+
+        return (matchLevels / averageWantedLevel) * 100.0f;
     }
 }
