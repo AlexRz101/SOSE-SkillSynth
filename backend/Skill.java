@@ -1,4 +1,8 @@
+
+
 public class Skill {
+
+    final float maxLevel = 5;
 
     private String name;
 
@@ -22,12 +26,20 @@ public class Skill {
 
     public void addXP(int xp)
     {
-
+        this.xp += xp;
+        updateLevel();
     }
 
     private void updateLevel()
     {
-
+        if (level >= maxLevel)
+        {
+            return;
+        }
+        if (xp >= xpToNextLevel())
+        {
+            level++;
+        }
     }
 
     public int xpToNextLevel()
@@ -37,6 +49,16 @@ public class Skill {
 
     public float getProgressPercentage()
     {
-        return -1.0f;
+        return (level/maxLevel) * 100.0f;
+    }
+
+    public int getXP()
+    {
+        return xp;
+    }
+
+    public int getLevel()
+    {
+        return  level;
     }
 }
