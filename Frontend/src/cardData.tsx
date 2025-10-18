@@ -1,38 +1,201 @@
 
-export const cards = [
-    {
+import type { SkillCategory } from "./types.tsx";
+
+export const categories: SkillCategory[] = [
+  {
+    key: "programming",
+    title: "Programming Languages",
+    cards: [
+      {
+        id: "py",
         skill: "Python",
-        description: "Learn Python conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    },
-
-    /*{
-        skill: "Java",
-        description: "Learn Java conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    },
-
-    {
-        skill: "React",
-        description: "Learn React conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    },
-
-    {
+        description: "Learn Python visually and practically with hands-on projects.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "data", "scripting"],
+        level: "Beginner",
+      },
+      {
+        id: "js",
         skill: "JavaScript",
-        description: "Learn JavaScript conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    },
-
-    {
-        skill: "CSS",
-        description: "Learn CSS conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    },
-
-    {
-        skill: "HTML",
-        description: "Learn HTML conceptually, visually and practically through hands-on projects",
-        image: "/ssLogo.svg"
-    }*/
-]
+        description: "Core JS, DOM, async patterns, and modern tooling.",
+        image: "/ssLogo.svg",
+        tags: ["frontend", "node"],
+        level: "Beginner",
+      },
+      {
+        id: "ts",
+        skill: "TypeScript",
+        description: "Types for safety; scale React/Node projects with confidence.",
+        image: "/ssLogo.svg",
+        tags: ["types", "frontend", "backend"],
+        level: "Intermediate",
+      },
+      {
+        id: "java",
+        skill: "Java",
+        description: "OOP, collections, concurrency, Spring basics.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "oop"],
+        level: "Intermediate",
+      },
+      {
+        id: "csharp",
+        skill: "C#",
+        description: "Build with .NET, ASP.NET, and Unity foundations.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "games"],
+        level: "Intermediate",
+      },
+    ],
+  },
+  {
+    key: "frameworks",
+    title: "Frameworks & Libraries",
+    cards: [
+      {
+        id: "react",
+        skill: "React",
+        description: "Components, hooks, state, routing, and performance.",
+        image: "/ssLogo.svg",
+        tags: ["frontend", "spa"],
+        level: "Beginner",
+      },
+      {
+        id: "node",
+        skill: "Node.js",
+        description: "APIs, auth, databases, and real-time services.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "api"],
+        level: "Intermediate",
+      },
+      {
+        id: "express",
+        skill: "Express",
+        description: "REST APIs, middleware patterns, validation, and testing.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "api"],
+        level: "Beginner",
+      },
+      {
+        id: "django",
+        skill: "Django",
+        description: "Rapid backend dev, ORM, auth, and admin.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "python"],
+        level: "Intermediate",
+      },
+      {
+        id: "spring",
+        skill: "Spring Boot",
+        description: "Microservices, DI, persistence, and cloud patterns.",
+        image: "/ssLogo.svg",
+        tags: ["backend", "java"],
+        level: "Advanced",
+      },
+    ],
+  },
+  {
+    key: "cyber",
+    title: "Cybersecurity",
+    cards: [
+      {
+        id: "netsec",
+        skill: "Network Security",
+        description: "Threat models, firewalls, IDS/IPS, and secure configs.",
+        image: "/ssLogo.svg",
+        tags: ["security", "networking"],
+        level: "Intermediate",
+      },
+      {
+        id: "appsec",
+        skill: "Application Security",
+        description: "OWASP, auth flows, session mgmt, and secure coding.",
+        image: "/ssLogo.svg",
+        tags: ["security", "web"],
+        level: "Intermediate",
+      },
+      {
+        id: "cloudsec",
+        skill: "Cloud Security",
+        description: "IAM, least privilege, secrets, and posture mgmt.",
+        image: "/ssLogo.svg",
+        tags: ["security", "cloud"],
+        level: "Advanced",
+      },
+    ],
+  },
+  {
+    key: "networking",
+    title: "Networking",
+    cards: [
+      {
+        id: "net-basics",
+        skill: "Networking Basics",
+        description: "OSI vs. TCP/IP, subnets, routing, NAT, DNS, DHCP.",
+        image: "/ssLogo.svg",
+        tags: ["networking", "infra"],
+        level: "Beginner",
+      },
+      {
+        id: "net-linux",
+        skill: "Linux Networking",
+        description: "ip/ss/tcpdump, firewalld/iptables, and services.",
+        image: "/ssLogo.svg",
+        tags: ["networking", "linux"],
+        level: "Intermediate",
+      },
+    ],
+  },
+  {
+    key: "os",
+    title: "Operating Systems",
+    cards: [
+      {
+        id: "linux",
+        skill: "Linux Fundamentals",
+        description: "Shell, processes, permissions, services, and logs.",
+        image: "/ssLogo.svg",
+        tags: ["os", "linux"],
+        level: "Beginner",
+      },
+      {
+        id: "windows",
+        skill: "Windows Admin",
+        description: "PowerShell, services, AD basics, and hardening.",
+        image: "/ssLogo.svg",
+        tags: ["os", "windows"],
+        level: "Intermediate",
+      },
+    ],
+  },
+  {
+    key: "data",
+    title: "Data & AI",
+    cards: [
+      {
+        id: "sql",
+        skill: "SQL",
+        description: "Queries, joins, indexing, and schema design.",
+        image: "/ssLogo.svg",
+        tags: ["data", "db"],
+        level: "Beginner",
+      },
+      {
+        id: "ml",
+        skill: "Machine Learning",
+        description: "Supervised vs. unsupervised, model eval, pipelines.",
+        image: "/ssLogo.svg",
+        tags: ["ai", "ml"],
+        level: "Intermediate",
+      },
+      {
+        id: "viz",
+        skill: "Data Visualization",
+        description: "Tell clear stories with charts and dashboards.",
+        image: "/ssLogo.svg",
+        tags: ["data", "viz"],
+        level: "Beginner",
+      },
+    ],
+  },
+];
