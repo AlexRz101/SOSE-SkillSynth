@@ -97,14 +97,19 @@ public class SkillSynthService {
         return skillRepository.save(skill);
     }
 
+    // Retrieves a Skill by name
+    public Optional<Skill> getSkillByName(String name) {
+        return skillRepository.findBySkillName(name);
+    }
+
     // Retrieves a Skill by ID
     public Optional<Skill> getSkillById(Long id) {
         return skillRepository.findById(id);
     }
 
     // Retrieves a Skill by description
-    public Optional<Skill> getSkillByName(String skillName) {
-        return skillRepository.findBySkillName(skillName);
+    public Optional<Skill> getSkillByDescription(String description) {
+        return skillRepository.findBySkillDescription(description);
     }
 
     // Retrieves All Skills
@@ -157,19 +162,19 @@ public class SkillSynthService {
     }
 
     // Retrieves Projects with experience level greater than specified level
-    public List<Project> getProjectsWithExperienceLevelGreaterThan(int level){
+    public List<Project> getProjectsXPGreaterThan(int level){
         return projectRepository.findByExperienceLevelGreaterThan(level);
     }
 
     // Retrieves Projects with expeience level less than specified level, cannot equal 0
-    public List<Project> getProjectsWithExperienceLevelLessThan(int level){
+    public List<Project> getProjectsXPLessThan(int level){
         return projectRepository.findAll().stream()
                 .filter(project -> project.getExperienceLevel() < level && project.getExperienceLevel() != 0)
                 .toList();
     }
 
     // Retrieves Projects with experience level equal to specified level
-    public List<Project> getProjectsWithExperienceLevelEqualTo(int level){
+    public List<Project> getProjectsXPEqualTo(int level){
         return projectRepository.findAll().stream()
                 .filter(project -> project.getExperienceLevel() == level)
                 .toList();
@@ -178,6 +183,15 @@ public class SkillSynthService {
     //Update Project
     public Project updateProject(Project project){
         return projectRepository.save(project); // Save will update if ID exists
+    }
+
+    // Delete Project
+    public boolean deleteProject(Long id){
+        if(projectRepository.existsById(id)){
+            projectRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }
