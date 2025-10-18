@@ -12,4 +12,5 @@ public interface SkillSynthRepository extends JpaRepository<User, Long> { //Hand
     Optional<User> findBySkillName(String username);
 
     List<User> findByLevelGreaterThan(int level);
+
 }
