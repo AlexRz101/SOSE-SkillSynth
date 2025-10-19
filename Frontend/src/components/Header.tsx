@@ -1,12 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import { useCallback } from "react"; function Header() { 
-  
+
+  const navigate = useNavigate();
   const handleScroll = useCallback(() => { const section = document.getElementById("main-content"); 
     if (section) section.scrollIntoView({ behavior: "smooth" }); 
   }, 
 []);
 
   return (
-    <header className="w-full flex flex-col justify-center items-center text-center gap-6 mt-8 select-none">
+    <header className="header-container flex flex-col justify-center items-center text-center gap-6 mt-8 select-none">
+
       {/* Title (Orbitron) */}
       <h1 className="text-5xl md:text-6xl font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300 animate-text-glow font-['Orbitron']">
         Skill Synth
@@ -41,7 +44,7 @@ import { useCallback } from "react"; function Header() {
 
       {/* 3D button (Rajdhani) — tasteful depth + hover lift */}
       <div className="mt-1">
-        <button className="button">
+        <button className="button" onClick={() => navigate('/signin')}>
   <span className="font-['Orbitron'] tracking-wide uppercase">
     Enter Skill Synth
   </span>

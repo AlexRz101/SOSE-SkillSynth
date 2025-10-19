@@ -1,5 +1,5 @@
-import { categories } from "./cardData";
-import Card from "./card";
+import { categories } from "./components/cardData";
+import Card from "./components/card";
 
 function Body() {
   return (
