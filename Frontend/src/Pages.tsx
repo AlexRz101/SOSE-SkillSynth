@@ -13,6 +13,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function Pages() {
   return (
     <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Header />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/main" element={<NavBar />} />
+        </Routes>
+        <Footer />
       <Routes>
         <Route path="/" element={<Header />} />
         <Route path="/signin" element={<SignIn />} />
@@ -84,4 +90,5 @@ function Pages() {
   );
 }
 
+export default Pages
 export default Pages;
