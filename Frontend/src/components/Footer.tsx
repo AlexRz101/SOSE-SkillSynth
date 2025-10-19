@@ -1,13 +1,24 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <footer className="fixed bottom-0 left-0 w-full px-6 py-4 text-sm text-white/80 backdrop-blur bg-black/20 border-t border-white/10 flex flex-col md:flex-row items-center justify-between z-50">
       {/* Left side: copyright */}
       <p className="mb-2 md:mb-0 text-center md:text-left tracking-wide">
-        &copy; {new Date().getFullYear()} <span className="font-semibold text-white">Skill Synth</span>. All rights reserved.
+        &copy; {new Date().getFullYear()}{" "}
+        <span className="font-semibold text-white">Skill Synth</span>. All rights reserved.
       </p>
 
-      {/* Right side: social links */}
-      <div className="flex gap-4">
+      {/* Right side: contact + social links */}
+      <div className="flex gap-4 items-center">
+        {/* Contact */}
+        <Link
+          to="/contact"
+          className="text-white/80 font-['Rajdhani'] tracking-wider transition hover:text-cyan-300 hover:scale-105"
+        >
+          Contact
+        </Link>
+
         {/* GitHub */}
         <a
           href="https://github.com/HMythical/SOSE-SkillSynth"
