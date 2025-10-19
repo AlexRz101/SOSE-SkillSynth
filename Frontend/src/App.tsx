@@ -1,16 +1,10 @@
 import './App.css';
-import Header from './Header.tsx';
-import Footer from './Footer.tsx';
-//import Body from './Body.tsx';
+import Pages from './Pages.tsx'
 
 function App() {
-
   return (
-    <>
-      <Header/>
-      <Footer/>
-    </>
-  )
+    <Pages/>
+  );
 }
 
-export default App
+export default App;
