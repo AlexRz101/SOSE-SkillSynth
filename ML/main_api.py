@@ -14,7 +14,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:8080", #Backend API
-        "http://127.0.0.1:5500" #replace with frontend API link
+        "http://localhost:5173" #replace with frontend API link
     ],
     allow_credentials=True,
     allow_methods=["*"],
