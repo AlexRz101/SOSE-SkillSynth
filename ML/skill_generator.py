@@ -65,7 +65,6 @@ class skill_generator:
 
     def upload_users(self, users, index_name="users-index"):
         
-        
         embeddings = {}
         for user in users:
             user_id = user.get("id")
