@@ -8,69 +8,74 @@ import java.util.Optional;
 @Service
 public class SkillSynthService {
 
-    @Autowired
-    private SkillSynthUserRepository userRepository; // Renamed for clarity - handles User operations
+    private final SkillSynthAppUserRepository userRepository; // Renamed for clarity - handles User operations
 
-    @Autowired
-    private SkillSynthSkillRepository skillRepository;
+    private final SkillSynthSkillRepository skillRepository;
 
-    @Autowired
-    private SkillSynthProjectRepository projectRepository;
+    private final SkillSynthProjectRepository projectRepository;
 
+    // Constructor injection
+    public SkillSynthService(SkillSynthAppUserRepository userRepository,
+                             SkillSynthSkillRepository skillRepository,
+                             SkillSynthProjectRepository projectRepository) {
+        this.userRepository = userRepository;
+        this.skillRepository = skillRepository;
+        this.projectRepository = projectRepository;
+    }
 
     /*
         USER SERVICES || This code block contains all services related to Users
      */
     // Creates a new User
-    public User createUser(String username, int level, List<Skill> skills) {
-        User user = new User(username, level, skills);
+    public AppUser createUser(String username, int level, List<Skill> skills) {
+        AppUser user = new AppUser(username, level, skills);
         return userRepository.save(user);
     }
 
     // Retrieves a User by ID
-    public Optional<User> getUserById(Long id) {
+    public Optional<AppUser> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
     // Retrieves a User by username
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUserName(username);
+    public Optional<AppUser> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     // Retrieves All Users
-    public List<User> getAllUsers() {
+    public List<AppUser> getAllUsers() {
         return userRepository.findAll();
     }
 
     // Retrieves Users with level greater than specified level
-    public List<User> getUsersWithLevelGreaterThan(int level) {
+    public List<AppUser> getUsersWithLevelGreaterThan(int level) {
         return userRepository.findByLevelGreaterThan(level);
     }
 
     // Retrieves Users with level less than specified level
-    public List<User> getUsersWithLevelLessThan(int level) {
+    public List<AppUser> getUsersWithLevelLessThan(int level) {
         return userRepository.findAll().stream()
                 .filter(user -> user.getLevel() < level)
                 .toList();
     }
 
     // Retrieves Users with level equal to specified level
-    public List<User> getUsersWithLevelEqualTo(int level) {
+    public List<AppUser> getUsersWithLevelEqualTo(int level) {
         return userRepository.findAll().stream()
                 .filter(user -> user.getLevel() == level)
                 .toList();
     }
 
     // Update user
-    public User updateUser(User user) {
+    public AppUser updateUser(AppUser user) {
         return userRepository.save(user); // Save will update if ID exists
     }
 
     // Update user level specifically
-    public Optional<User> updateUserLevel(Long id, int newLevel) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public Optional<AppUser> updateUserLevel(Long id, int newLevel) {
+        Optional<AppUser> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            AppUser user = userOptional.get();
             user.setLevel(newLevel);
             return Optional.of(userRepository.save(user));
         }
@@ -85,11 +90,6 @@ public class SkillSynthService {
         }
         return false;
     }
-
-
-    /*
-        SKILL SERVICES || This code block contains all services related to Skills
-     */
 
     // Creates a new Skill
     public Skill createSkill(String skillName, String description) {
@@ -109,7 +109,7 @@ public class SkillSynthService {
 
     // Retrieves a Skill by description
     public Optional<Skill> getSkillByDescription(String description) {
-        return skillRepository.findBySkillDescription(description);
+        return skillRepository.findByDescription(description);
     }
 
     // Retrieves All Skills
@@ -166,7 +166,7 @@ public class SkillSynthService {
         return projectRepository.findByExperienceLevelGreaterThan(level);
     }
 
-    // Retrieves Projects with expeience level less than specified level, cannot equal 0
+    // Retrieves Projects with experience level less than specified level, cannot equal 0
     public List<Project> getProjectsXPLessThan(int level){
         return projectRepository.findAll().stream()
                 .filter(project -> project.getExperienceLevel() < level && project.getExperienceLevel() != 0)

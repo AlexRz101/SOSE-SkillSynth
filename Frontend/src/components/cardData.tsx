@@ -1,5 +1,5 @@
 
-import type { SkillCategory } from "../types.tsx";
+import type { SkillCategory } from "./types.tsx";
 
 export const categories: SkillCategory[] = [
   {

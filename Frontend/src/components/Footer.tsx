@@ -8,22 +8,6 @@ function Footer() {
         &copy; {new Date().getFullYear()} <span className="font-semibold text-white">Skill Synth</span>. All rights reserved.
       </p>
 
-      {/* Right side: social links */}
-      <div className="flex gap-4">
-        &copy; {new Date().getFullYear()}{" "}
-        <span className="font-semibold text-white">Skill Synth</span>. All rights reserved.
-      </p>
-
-      {/* Right side: contact + social links */}
-      <div className="flex gap-4 items-center">
-        {/* Contact */}
-        <Link
-          to="/contact"
-          className="text-white/80 font-['Rajdhani'] tracking-wider transition hover:text-cyan-300 hover:scale-105"
-        >
-          Contact
-        </Link>
-
         {/* GitHub */}
         <a
           href="https://github.com/HMythical/SOSE-SkillSynth"
@@ -59,7 +43,6 @@ function Footer() {
             <path d="M20 0a20 20 0 00-4.48.52 1.5 1.5 0 00-.69.35c-1.96-.43-4.07-.43-6.12 0a1.5 1.5 0 00-.69-.35A20 20 0 003.99 0C.89 4.7-.29 9.25.09 13.7c.63 7.18 7.48 10.03 11.91 10.3 4.43-.27 11.28-3.12 11.91-10.3.38-4.45-.8-9-3.9-13.7zM9.45 15.62c-1.02 0-1.85-.93-1.85-2.08s.83-2.08 1.85-2.08 1.85.93 1.85 2.08-.83 2.08-1.85 2.08zm5.1 0c-1.02 0-1.85-.93-1.85-2.08s.83-2.08 1.85-2.08 1.85.93 1.85 2.08-.83 2.08-1.85 2.08z" />
           </svg>
         </a>
-      </div>
     </footer>
   );
 }

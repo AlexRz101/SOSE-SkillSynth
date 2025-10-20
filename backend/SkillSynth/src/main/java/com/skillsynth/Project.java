@@ -1,9 +1,7 @@
 package com.skillsynth;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -14,6 +12,13 @@ public class Project {
     private Long id;
 
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_skills",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
     private List<Skill> recommendedSkills;
 
     private String dateRange;
