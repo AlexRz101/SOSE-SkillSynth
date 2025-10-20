@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { NavLink, useLocation, Link } from "react-router-dom";
 
@@ -10,18 +9,13 @@ export default function NavBar3D() {
     "relative inline-flex items-center px-4 py-2 rounded-xl font-['Rajdhani'] text-[15px] tracking-wide transition-transform duration-200";
   const linkIdle =
     "text-white/80 hover:text-cyan-200 hover:-translate-y-[1px]";
-  const linkActive =
-    "text-white";
+  const linkActive = "text-white";
 
   const navItem = (to: string, label: string) => (
     <NavLink
       to={to}
       className={({ isActive }: { isActive: boolean }) =>
-        [
-          linkBase,
-          isActive ? linkActive : linkIdle,
-          "group",
-        ].join(" ")
+        [linkBase, isActive ? linkActive : linkIdle, "group"].join(" ")
       }
       onClick={() => setOpen(false)}
     >
@@ -41,7 +35,6 @@ export default function NavBar3D() {
 
   return (
     <header className="sticky top-0 z-[60]">
-      {/* 3D bar container */}
       <div className="relative mx-auto mt-3 w-[min(1100px,92%)]">
         {/* outer glow frame */}
         <div
@@ -75,6 +68,7 @@ export default function NavBar3D() {
           <div className="hidden md:flex items-center gap-2">
             {navItem("/dashboard", "Dashboard")}
             {navItem("/projects", "Projects")}
+            {navItem("/groups", "Groups")} {/* ← added Groups link */}
             {navItem("/learn", "Learn")}
           </div>
 
@@ -116,6 +110,7 @@ export default function NavBar3D() {
             <div className="grid">
               {navItem("/dashboard", "Dashboard")}
               {navItem("/projects", "Projects")}
+              {navItem("/groups", "Groups")} {/* ← added Groups here too */}
               {navItem("/learn", "Learn")}
             </div>
           </div>

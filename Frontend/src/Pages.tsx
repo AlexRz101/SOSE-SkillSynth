@@ -8,6 +8,7 @@ import Profile from "./pages/Profile.tsx";
 import Projects from "./pages/Projects.tsx";
 import Learn from "./pages/Learn.tsx";
 import Contact from "./pages/Contact.tsx";
+import Groups from "./pages/Groups.tsx"; // ← added this
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function Pages() {
@@ -29,6 +30,7 @@ function Pages() {
             </>
           }
         />
+
         <Route
           path="/profile"
           element={
@@ -41,6 +43,7 @@ function Pages() {
             </>
           }
         />
+
         <Route
           path="/projects"
           element={
@@ -53,6 +56,7 @@ function Pages() {
             </>
           }
         />
+
         <Route
           path="/learn"
           element={
@@ -65,6 +69,20 @@ function Pages() {
             </>
           }
         />
+
+        <Route
+          path="/groups"
+          element={
+            <>
+              <NavBar />
+              <main className="w-[min(1100px,95%)] mx-auto py-8 pb-28 overflow-y-auto">
+                <Groups />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
         <Route
           path="/contact"
           element={
@@ -78,10 +96,8 @@ function Pages() {
           }
         />
       </Routes>
-
-      {/* Global neon scrollwheel */}
     </BrowserRouter>
   );
 }
 
-export default Pages
+export default Pages;

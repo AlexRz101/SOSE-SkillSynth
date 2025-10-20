@@ -2,6 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 
 /** --------- Types --------- **/
 type Skill = { name: string; level: number };
+type Contact = {
+  email?: string;
+  phone?: string;
+  website?: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  discord?: string;
+};
+type Basic = { fullName: string; availability: string };
 
 /** --------- Catalog: 10 categories with sample skills --------- **/
 const SKILL_CATALOG: Record<string, string[]> = {
@@ -40,10 +50,14 @@ const SKILL_CATALOG: Record<string, string[]> = {
 /** deduped flat list for quick “already-added” checks */
 const ALL_SKILLS = Object.values(SKILL_CATALOG).flat();
 
-/** --------- Helpers --------- **/
+/** --------- Storage Helpers --------- **/
+const SKILLS_KEY = "skills";
+const CONTACT_KEY = "profile.contact";
+const BASIC_KEY = "profile.basic";
+
 const loadSkills = (): Skill[] => {
   try {
-    const raw = localStorage.getItem("skills");
+    const raw = localStorage.getItem(SKILLS_KEY);
     if (!raw) return [];
     const parsed: Skill[] = JSON.parse(raw);
     return parsed.filter((s) => typeof s.name === "string" && typeof s.level === "number");
@@ -51,18 +65,44 @@ const loadSkills = (): Skill[] => {
     return [];
   }
 };
-
 const saveSkills = (skills: Skill[]) => {
-  localStorage.setItem("skills", JSON.stringify(skills));
-  // let other routes (dashboard) know
+  localStorage.setItem(SKILLS_KEY, JSON.stringify(skills));
   window.dispatchEvent(new Event("skills-updated"));
+};
+
+const loadContact = (): Contact => {
+  try {
+    const raw = localStorage.getItem(CONTACT_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+};
+const saveContact = (c: Contact) => {
+  localStorage.setItem(CONTACT_KEY, JSON.stringify(c));
+};
+
+const loadBasic = (): Basic | null => {
+  try {
+    const raw = localStorage.getItem(BASIC_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+const saveBasic = (b: Basic) => {
+  localStorage.setItem(BASIC_KEY, JSON.stringify(b));
 };
 
 /** --------- Component --------- **/
 export default function Profile() {
-  // Basic profile (stub for now)
-  const [fullName, setFullName] = useState<string>("Alex Doe");
-  const [availability, setAvailability] = useState<string>("1-3h");
+  // Basic profile (persisted)
+  const basicInitial = loadBasic();
+  const [fullName, setFullName] = useState<string>(basicInitial?.fullName ?? "Alex Doe");
+  const [availability, setAvailability] = useState<string>(basicInitial?.availability ?? "1-3h");
+
+  // Contact info (persisted)
+  const [contact, setContact] = useState<Contact>(() => loadContact());
 
   // Skills state (persisted)
   const [skills, setSkills] = useState<Skill[]>(() => loadSkills());
@@ -74,6 +114,7 @@ export default function Profile() {
   // Available options excluding already-added skills
   const taken = useMemo(() => new Set(skills.map((s) => s.name)), [skills]);
 
+  // Persist skills automatically
   useEffect(() => {
     saveSkills(skills);
   }, [skills]);
@@ -96,9 +137,31 @@ export default function Profile() {
 
   const saveProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    // You can persist name/availability later; for now we just keep in memory.
-    // Skills already saved via useEffect above.
+    saveBasic({ fullName, availability });
+    saveContact(contact);
+    // skills already saved by effect
   };
+
+  const contactInput = (
+    label: string,
+    value: string | undefined,
+    onChange: (v: string) => void,
+    placeholder: string,
+    type: "text" | "email" | "tel" = "text"
+  ) => (
+    <label className="block">
+      <span className="block text-sm text-white/80 font-['Rajdhani'] mb-1">{label}</span>
+      <input
+        type={type}
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-xl bg-black/25 text-white placeholder-white/45
+                   border border-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300/70
+                   px-4 py-3 font-['Rajdhani'] tracking-wide shadow-[inset_0_0_0_999px_rgba(255,255,255,0.02)]"
+      />
+    </label>
+  );
 
   return (
     <div className="min-h-screen px-4 md:px-8 py-10 text-white space-y-10">
@@ -114,10 +177,10 @@ export default function Profile() {
         </p>
       </header>
 
-      {/* Profile form card */}
+      {/* Profile + Contact form card */}
       <form
         onSubmit={saveProfile}
-        className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 md:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
+        className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 md:p-7 shadow-[0_10px_35px_rgba(0,0,0,0.35)] space-y-6"
       >
         <div
           aria-hidden
@@ -129,41 +192,53 @@ export default function Profile() {
             zIndex: -1,
           }}
         />
-        {/* Full Name */}
-        <label className="block mb-5">
-          <span className="block text-sm text-white/80 font-['Rajdhani'] mb-1">
-            Full Name
-          </span>
-          <input
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="w-full rounded-xl bg-black/25 text-white placeholder-white/45
-                       border border-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300/70
-                       px-4 py-3 font-['Rajdhani'] tracking-wide shadow-[inset_0_0_0_999px_rgba(255,255,255,0.02)]"
-            placeholder="Your name"
-          />
-        </label>
 
-        {/* Availability */}
-        <label className="block">
-          <span className="block text-sm text-white/80 font-['Rajdhani'] mb-1">
-            Weekly Availability
-          </span>
-          <select
-            value={availability}
-            onChange={(e) => setAvailability(e.target.value)}
-            className="w-full rounded-xl bg-black/25 text-white border border-[#a855f7]/60 focus:outline-none
-                       focus:ring-2 focus:ring-purple-400/70 px-4 py-3 appearance-none"
-          >
-            <option value="1-3h">1-3h</option>
-            <option value="4-7h">4-7h</option>
-            <option value="8-12h">8-12h</option>
-            <option value="13-20h">13-20h</option>
-            <option value="20+h">20+h</option>
-          </select>
-        </label>
+        {/* Full Name + Availability */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <label className="block">
+            <span className="block text-sm text-white/80 font-['Rajdhani'] mb-1">
+              Full Name
+            </span>
+            <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="w-full rounded-xl bg-black/25 text-white placeholder-white/45
+                         border border-white/15 focus:outline-none focus:ring-2 focus:ring-cyan-300/70
+                         px-4 py-3 font-['Rajdhani'] tracking-wide shadow-[inset_0_0_0_999px_rgba(255,255,255,0.02)]"
+              placeholder="Your name"
+            />
+          </label>
 
-        <div className="mt-6">
+          <label className="block">
+            <span className="block text-sm text-white/80 font-['Rajdhani'] mb-1">
+              Weekly Availability
+            </span>
+            <select
+              value={availability}
+              onChange={(e) => setAvailability(e.target.value)}
+              className="w-full rounded-xl bg-black/25 text-white border border-[#a855f7]/60 focus:outline-none
+                         focus:ring-2 focus:ring-purple-400/70 px-4 py-3 appearance-none"
+            >
+              <option value="1-3h">1-3h</option>
+              <option value="4-7h">4-7h</option>
+              <option value="8-12h">8-12h</option>
+              <option value="13-20h">13-20h</option>
+              <option value="20+h">20+h</option>
+            </select>
+          </label>
+        </div>
+
+        {/* Contact Information */}
+        <div className="mt-2">
+          <h3 className="text-xl font-['Rajdhani'] text-white/90 mb-3">Contact Information</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {contactInput("Email", contact.email, (v) => setContact((c) => ({ ...c, email: v })), "you@example.com", "email")}
+            {contactInput("Discord", contact.discord, (v) => setContact((c) => ({ ...c, discord: v })), "yourDiscord#1234")}
+          </div>
+        </div>
+
+        <div className="pt-2">
           <button
             type="submit"
             className="px-5 py-2.5 rounded-xl font-['Rajdhani'] border border-purple-400/50
