@@ -8,6 +8,7 @@ class SkillSynthApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

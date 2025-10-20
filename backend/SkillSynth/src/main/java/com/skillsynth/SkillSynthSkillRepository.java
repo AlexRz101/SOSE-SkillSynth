@@ -13,6 +13,6 @@ public interface SkillSynthSkillRepository extends JpaRepository<Skill,Long> {
 
     List<Skill> findBySkillNameContaining(String keyword);
 
-    Optional<Skill> findBySkillDescription(String description);
+    Optional<Skill> findByDescription(String description);
 
 }

@@ -6,214 +6,179 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
-@RequestMapping("/api/users")
-public class SkillSynthController { //Handles requests
+@RequestMapping("/api")
+public class SkillSynthController {
 
     @Autowired
     private SkillSynthService skillSynthService;
 
-    /*
-        GET HTTP REQUESTS || This code block contains all GET requests for the Web-App. Including Users, Skills, and Projects, etc
-     */
+    // -------------------- USER ENDPOINTS --------------------
 
-    @GetMapping
-    public List<User> getAllUsers(){
+    @GetMapping("/users")
+    public List<AppUser> getAllUsers() {
         return skillSynthService.getAllUsers();
     }
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        Optional<User> user = skillSynthService.getUserById(id);
-
-    return user.map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username){
-        Optional<User> user = skillSynthService.getUserByUsername(username);
-        return user.map(ResponseEntity::ok)
+    @GetMapping("/users/{id}")
+    public ResponseEntity<AppUser> getUserById(@PathVariable Long id) {
+        return skillSynthService.getUserById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/level/greater-than/{level}")
-    public List<User> getUserWithLevelGreaterThan(@PathVariable int level){
+    @GetMapping("/users/username/{username}")
+    public ResponseEntity<AppUser> getUserByUsername(@PathVariable String username) {
+        return skillSynthService.getUserByUsername(username)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/users/level/greater-than/{level}")
+    public List<AppUser> getUsersWithLevelGreaterThan(@PathVariable int level) {
         return skillSynthService.getUsersWithLevelGreaterThan(level);
     }
 
-    @GetMapping("/level/less-than/{level}")
-    public List<User> getUserWithLevelLessThan(@PathVariable int level){
+    @GetMapping("/users/level/less-than/{level}")
+    public List<AppUser> getUsersWithLevelLessThan(@PathVariable int level) {
         return skillSynthService.getUsersWithLevelLessThan(level);
     }
 
-    @GetMapping("/level/equal-to/{level}")
-    public List<User> getUserWithLevelEqualTo(@PathVariable int level){
+    @GetMapping("/users/level/equal-to/{level}")
+    public List<AppUser> getUsersWithLevelEqualTo(@PathVariable int level) {
         return skillSynthService.getUsersWithLevelEqualTo(level);
     }
 
+    @PostMapping("/users")
+    public AppUser createUser(@RequestBody AppUser user) {
+        return skillSynthService.createUser(user.getUsername(), user.getLevel(), user.getAllSkills());
+    }
 
+    @PutMapping("/users")
+    public AppUser updateUser(@RequestBody AppUser user) {
+        return skillSynthService.updateUser(user);
+    }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        return skillSynthService.deleteUser(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
 
+    @PatchMapping("/users/{id}/level")
+    public ResponseEntity<AppUser> updateUserLevel(@PathVariable Long id, @RequestBody int newLevel) {
+        return skillSynthService.updateUserLevel(id, newLevel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-    @GetMapping
-    public List<Skill> getAllSkills(){
+    // -------------------- SKILL ENDPOINTS --------------------
+
+    @GetMapping("/skills")
+    public List<Skill> getAllSkills() {
         return skillSynthService.getAllSkills();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/skills/{id}")
     public ResponseEntity<Skill> getSkillById(@PathVariable Long id) {
-        Optional<Skill> skill = skillSynthService.getSkillById(id);
-        return skill.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return skillSynthService.getSkillById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/skills/name/{name}")
     public ResponseEntity<Skill> getSkillByName(@PathVariable String name) {
-        Optional<Skill> skill = skillSynthService.getSkillByName(name);
-        return skill.map(ResponseEntity::ok)
+        return skillSynthService.getSkillByName(name)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
+    @GetMapping("/skills/description")
     public ResponseEntity<Skill> getSkillByDescription(@RequestParam String description) {
-        Optional<Skill> skill = skillSynthService.getSkillByDescription(description);
-        return skill.map(ResponseEntity::ok)
+        return skillSynthService.getSkillByDescription(description)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/search")
+    @GetMapping("/skills/search")
     public List<Skill> searchSkillsByKeyword(@RequestParam String keyword) {
         return skillSynthService.getSkillsByKeyword(keyword);
     }
 
-
-
-
-
-    @GetMapping
-    public  List<Project> getAllProjects(){
-        return skillSynthService.getAllProjects();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Project> getProjectById(@PathVariable Long id){
-        Optional<Project> project = skillSynthService.getProjectById(id);
-        return project.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/name/{name}")
-    public ResponseEntity<Project> getProjectByName(@PathVariable String name){
-        Optional<Project> project = skillSynthService.getProjectByName(name);
-        return project.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/level/greater-than/{level}")
-    public List<Project> getProjectsLevelGreaterThan(@PathVariable int level) {
-        return skillSynthService.getProjectsXPGreaterThan(level);
-    }
-
-    @GetMapping("/level/less-than/{level}")
-    public List<Project> getProjectsLevelLessThan(@PathVariable int level) {
-        return skillSynthService.getProjectsXPLessThan(level);
-    }
-
-    @GetMapping("/level/equal-to/{level}")
-    public List<Project> getProjectsLevelEqualTo(@PathVariable int level) {
-        return skillSynthService.getProjectsXPEqualTo(level);
-    }
-
-
-
-    /*
-        POST HTTP REQUESTS || This code block contains all POST requests for the Web-App. Including Users, Skills, and Projects, etc
-     */
-
-
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return skillSynthService.createUser(user.getUsername(), user.getLevel(), user.getAllSkills());
-    }
-
-    @PostMapping
+    @PostMapping("/skills")
     public Skill createSkill(@RequestBody Skill skill) {
         return skillSynthService.createSkill(skill.getSkillName(), skill.getDescription());
     }
 
-    @PostMapping
-    public Project createProject(@RequestBody Project project) {
-        return skillSynthService.createProject(project.getName(), project.getRecommendedSkills(), project.getDateRange(), project.getProjectDescription(), project.getExperienceLevel());
-    }
-
-
-    /*
-        PUT HTTP REQUESTS || This code block contains all PUT requests for the Web-App. Including Users, Skills, and Projects, etc
-     */
-
-    @PutMapping
-    public User updateUser(@RequestBody User user){
-        return skillSynthService.updateUser(user);
-    }
-
-    @PutMapping
+    @PutMapping("/skills")
     public Skill updateSkill(@RequestBody Skill skill) {
         return skillSynthService.updateSkill(skill);
     }
 
-    @PutMapping
+    @DeleteMapping("/skills/{id}")
+    public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
+        return skillSynthService.deleteSkill(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
+
+    // -------------------- PROJECT ENDPOINTS --------------------
+
+    @GetMapping("/projects")
+    public List<Project> getAllProjects() {
+        return skillSynthService.getAllProjects();
+    }
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
+        return skillSynthService.getProjectById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/projects/name/{name}")
+    public ResponseEntity<Project> getProjectByName(@PathVariable String name) {
+        return skillSynthService.getProjectByName(name)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/projects/level/greater-than/{level}")
+    public List<Project> getProjectsLevelGreaterThan(@PathVariable int level) {
+        return skillSynthService.getProjectsXPGreaterThan(level);
+    }
+
+    @GetMapping("/projects/level/less-than/{level}")
+    public List<Project> getProjectsLevelLessThan(@PathVariable int level) {
+        return skillSynthService.getProjectsXPLessThan(level);
+    }
+
+    @GetMapping("/projects/level/equal-to/{level}")
+    public List<Project> getProjectsLevelEqualTo(@PathVariable int level) {
+        return skillSynthService.getProjectsXPEqualTo(level);
+    }
+
+    @PostMapping("/projects")
+    public Project createProject(@RequestBody Project project) {
+        return skillSynthService.createProject(
+                project.getName(),
+                project.getRecommendedSkills(),
+                project.getDateRange(),
+                project.getProjectDescription(),
+                project.getExperienceLevel()
+        );
+    }
+
+    @PutMapping("/projects")
     public Project updateProject(@RequestBody Project project) {
         return skillSynthService.updateProject(project);
     }
 
-    /*
-        DELETE HTTP REQUESTS || This code block contains all DELETE requests for the Web-App. Including Users, Skills, and Projects, etc
-     */
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        boolean deleted = skillSynthService.deleteUser(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
-        boolean deleted = skillSynthService.deleteSkill(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/projects/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        boolean deleted = skillSynthService.deleteProject(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return skillSynthService.deleteProject(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
-
-    /*
-        Patch HTTP REQUESTS || This code block contains all PATCH requests for the Web-App. Including Users, Skills, and Projects, etc
-     */
-
-    @PatchMapping("/{id}/level")
-    public ResponseEntity<User> updateUserLevel(@PathVariable Long id, @RequestBody int newLevel) {
-        Optional<User> updatedUser = skillSynthService.updateUserLevel(id, newLevel);
-        return updatedUser.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-
-
 }

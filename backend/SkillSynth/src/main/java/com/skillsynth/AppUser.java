@@ -1,9 +1,6 @@
 package com.skillsynth;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -17,12 +14,18 @@ public class AppUser { //Java's interpretation of databases
     private String username;   // Replaces skillName
     private int level; // User's overall level
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_skills",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
     private List<Skill>  skills; // List of skills associated with the user
 
     // Constructors
-    public User() {}
+    public AppUser() {}
 
-    public User(String username, int level, List<Skill> skills) {
+    public AppUser(String username, int level, List<Skill> skills) {
         this.username = username;
         this.level = level;
         this.skills = skills;
